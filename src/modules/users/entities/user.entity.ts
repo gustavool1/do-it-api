@@ -1,7 +1,9 @@
+import { Task } from 'src/modules/tasks/entities/task.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -21,6 +23,9 @@ export class User {
 
   @Column({ name: 'password_hash' })
   passwordHash: string;
+
+  @OneToMany(() => Task, (task) => task.user)
+  tasks: Task[];
 
   constructor(user: Partial<User>) {
     this.id = user?.id;

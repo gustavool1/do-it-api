@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { UsersServices } from '../services/users.services';
 import { CreateUserDto } from '../dtos/create-user-request';
-import { User } from '../entity/user.entity';
+import { User } from '../entities/user.entity';
 import { SignInDto } from '../dtos/sign-in-request';
 import { SignInResponse } from '../dtos/sign-in-response';
 
