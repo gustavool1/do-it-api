@@ -13,6 +13,7 @@ import { CreateTaskDto } from '../dtos/create-task.dto';
 import { TasksServices } from '../services/tasks.services';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { Task } from '../entities/task.entity';
+import { SuccessResponse } from '../dtos/success-response.dto';
 
 @Controller('tasks')
 export class TasksController {
@@ -31,13 +32,13 @@ export class TasksController {
   }
   @UseGuards(AuthGuard)
   @Patch('/:id')
-  async completeTask(@Param('id') id: string): Promise<void> {
+  async completeTask(@Param('id') id: string): Promise<SuccessResponse> {
     return await this.tasksServices.completeTask(id);
   }
 
   @UseGuards(AuthGuard)
   @Delete('/:id')
-  async deleteTask(@Param('id') id: string): Promise<void> {
+  async deleteTask(@Param('id') id: string): Promise<SuccessResponse> {
     return await this.tasksServices.deleteTask(id);
   }
 }

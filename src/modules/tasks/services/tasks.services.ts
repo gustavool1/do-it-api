@@ -4,6 +4,7 @@ import { Task } from '../entities/task.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/modules/users/entities/user.entity';
 import { AppError } from 'src/errors/app-error';
+import { SuccessResponse } from '../dtos/success-response.dto';
 
 export class TasksServices {
   constructor(
@@ -17,6 +18,10 @@ export class TasksServices {
     const user = await this.userRepository.findOne({
       where: { id: data.userId },
     });
+
+    if (!user) {
+      throw new AppError('User not found', 404);
+    }
 
     const task = new Task({
       title: data.title,
@@ -40,13 +45,18 @@ export class TasksServices {
     const user = await this.userRepository.findOne({
       where: { id: userId },
     });
+
+    if (!user) {
+      throw new AppError('User not found', 404);
+    }
+
     return await this.taskRepository.find({
       where: { user: user },
       relations: ['user'],
     });
   }
 
-  async completeTask(id: string) {
+  async completeTask(id: string): Promise<SuccessResponse> {
     const task = await this.getTaskById(id);
 
     if (!task) {
@@ -55,9 +65,10 @@ export class TasksServices {
 
     task.completed = true;
     this.taskRepository.save(task);
+    return { message: 'Task completed successfully', statusCode: 200 };
   }
 
-  async deleteTask(id: string) {
+  async deleteTask(id: string): Promise<SuccessResponse> {
     const task = await this.getTaskById(id);
 
     if (!task) {
@@ -65,5 +76,6 @@ export class TasksServices {
     }
 
     await this.taskRepository.remove(task);
+    return { message: 'Task deleted successfully', statusCode: 200 };
   }
 }
