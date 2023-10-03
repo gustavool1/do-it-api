@@ -1,0 +1,3 @@
+CREATE DATABASE IF NOT EXISTS `do_it`;
+
+USE `do_it`;
