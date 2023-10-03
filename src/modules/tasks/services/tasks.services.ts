@@ -54,7 +54,6 @@ export class TasksServices {
     }
 
     task.completed = true;
-
     this.taskRepository.save(task);
   }
 
@@ -65,6 +64,6 @@ export class TasksServices {
       throw new AppError('Task not found', 404);
     }
 
-    return await this.taskRepository.remove(task);
+    await this.taskRepository.remove(task);
   }
 }
