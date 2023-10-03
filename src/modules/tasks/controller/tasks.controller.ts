@@ -7,29 +7,34 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateTaskDto } from '../dtos/create-task.dto';
 import { TasksServices } from '../services/tasks.services';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('tasks')
 export class TasksController {
   constructor(private readonly tasksServices: TasksServices) {}
 
+  @UseGuards(AuthGuard)
   @Post()
   async createTask(@Body() data: CreateTaskDto): Promise<any> {
     return this.tasksServices.createTask(data);
   }
 
+  @UseGuards(AuthGuard)
   @Get()
   async getUserTasks(@Query('userId') userId: string) {
     return await this.tasksServices.getUsersTasks(userId);
   }
-
+  @UseGuards(AuthGuard)
   @Patch('/:id')
   async completeTask(@Param('id') id: string) {
     return await this.tasksServices.completeTask(id);
   }
 
+  @UseGuards(AuthGuard)
   @Delete('/:id')
   async deleteTask(@Param('id') id: string) {
     return await this.tasksServices.deleteTask(id);
